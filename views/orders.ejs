@@ -1,0 +1,143 @@
+<%- include('parts/head') ,{variant: 'compact' }%>
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+    </head>
+
+    <body>
+<%- include('parts/nav') %>
+<% for(let error of validationErrors){%>
+<div class="container vertical-center my-3">
+
+<p class="alert alert-danger text-center d-inline-block vertical-center">
+<i class="fas fa-exclamation-triangle"></i>
+&nbsp;<%=error.msg%>
+</p>
+</div>
+<%}%>
+<%if(orders.length==0){%>
+<div class="container text-center mt-4">
+    <div class="alert alert-danger">No items in your cart</div>
+</div>
+<% }else{ %>
+    <div>
+        <% for (let index = 0; index < orders.length; index++) { %>
+            <% const item = orders[index]; %>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">
+                        <div class="row cart-item">
+                            <div class="col-md-2">
+                                <img src="<%= item.products[0].image %>" alt="Product Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2 text-center"><strong>Order</strong></h6>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Total</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%= item.total %> EGP
+                                    </h5>
+                                </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Time Made</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%= new Date(item.timestamp).toISOString().split('T')[0] %>
+                                    </h5>
+                                </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Phone Used</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%= item.phone %>
+                                    </h5>
+                                </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Address Used</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%= item.address %>
+                                    </h5>
+                                </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Status</strong>
+                                    <h5 class="font-weight-bold">
+                                        <% if (item.status == 0) { %>
+                                            Pending
+                                        <% } else if (item.status == 1) { %>
+                                            Accepted
+                                        <% } else if (item.status == -1) { %>
+                                            Rejected
+                                        <% } else if (item.status == 2) { %>
+                                            Delivered
+                                        <% } else if (item.status == 3) { %>
+                                            Done
+                                        <% } %>
+                                    </h5>
+                                </div>
+                            </div>
+                            <div class="col-md-4 align-self-center">
+                                <div class="card border-0 justify-content-center">
+                                    <!-- Button trigger modal -->
+                                    <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal<%= index %>">
+                                        Show Products
+                                    </button>
+        
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="exampleModal<%= index %>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Order Product</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <% for (let product of item.products) { %>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <div class="card-text">
+                                                                    <div class="row cart-item">
+                                                                        <div class="col-md-2">
+                                                                            <img src="<%= product.image %>" alt="Product Image" class="img-fluid">
+                                                                        </div>
+                                                                        <div class="col-md-6">
+                                                                            <h6 class="card-subtitle mb-2"><%= product.name %></h6>
+                                                                            <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                                                                <strong class="text-muted">Price</strong>
+                                                                                <h5 class="font-weight-bold">
+                                                                                    <%= product.price %> EGP
+                                                                                </h5>
+                                                                            </div>
+        
+                                                                            <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                                                                <strong class="text-muted">Amount</strong>
+                                                                                <h5 class="font-weight-bold">
+                                                                                    <%= product.amount %>
+                                                                                </h5>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <% } %>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+            </div>
+
+    <% } %>
+
+        <%- include('parts/footer') %>

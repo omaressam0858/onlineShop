@@ -1,0 +1,126 @@
+<%- include('parts/head') ,{variant: 'compact' }%>
+    <style>
+        img {
+            width: 100%;
+        }
+    </style>
+    </head>
+
+    <body>
+<%- include('parts/nav') %>
+<% for(let error of validationErrors){%>
+<div class="container vertical-center my-3">
+
+<p class="alert alert-danger text-center d-inline-block vertical-center">
+<i class="fas fa-exclamation-triangle"></i>
+&nbsp;<%=error.msg%>
+</p>
+</div>
+<%}%>
+<%if(items.length==0){%>
+<div class="container text-center mt-4">
+    <div class="alert alert-danger">No items in your cart</div>
+</div>
+<% }else{ %>
+    <div>
+        <% for( let item of items ) { %>
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-text">
+                        <div class="row cart-item">
+                            <div class="col-md-2">
+                                <img src="<%=item.image%>" alt="Product Image" class="img-fluid">
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="card-subtitle mb-2"><%=item.name%></h6>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Price</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%=item.price%> EGP
+                                    </h5>
+                                </div>
+                                <div class="d-flex justify-content-between py-3 border-bottom cart-text">
+                                    <strong class="text-muted">Total</strong>
+                                    <h5 class="font-weight-bold">
+                                        <%=item.price * item.amount%> EGP
+                                    </h5>
+                                </div>
+                                <form method="POST">
+                                <input type='number' name="amount" min='1' value="<%=item.amount%>" class="form-control">
+
+                                <input type="hidden" name="cartId" value="<%=item.id%>">
+ 
+                            </div> 
+                            <div class="col-md-4 align-self-center" >
+                                <div class="card border-0 justify-content-center ">
+                                    <button type="submit" class="btn btn-primary m-2" formaction="/cart/update">Update</button>
+                                    
+                                    <button type="submit" class="btn btn-danger m-2" formaction="/cart/delete">Delete</button>
+                                </div>
+                            </div>
+                                </form>
+                        </div>
+
+                        <!-- Second item -->
+                    </div>
+                </div>
+            </div>
+
+        <% } %>
+    </div>
+    <form action="/order/add" method="POST" class="container">
+        <div class="row py-5 p-4 bg-white rounded shadow-sm">
+            <div class="col-lg-6">
+                <div class="bg-light rounded px-4 py-3 text-uppercase font-weight-bold">
+                    Phone Number</div>
+                <div class="p-4">
+                    <p class="font-italic mb-4"><i class="fas fa-mobile-alt"></i> Enter Your Phone Number So We Can Contact You</p>
+                    <textarea name="phone" cols="30" rows="2" class="form-control">+20</textarea>
+                </div>
+                <div class="bg-light rounded px-4 py-3 text-uppercase font-weight-bold"><i class="fas fa-map"></i>
+                    Address For Delivery</div>
+                <div class="p-4">
+                    <p class="font-italic mb-4">Leave your address so we could ship your
+                        delivery as fast as possible<br>Syntax: Building. Street Name /
+                        City / Governorate</p>
+                    <textarea name="address" cols="30" rows="2" class="form-control"></textarea>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="bg-light rounded px-4 py-3 text-uppercase font-weight-bold">
+                    Order summary </div>
+                <div class="p-4">
+                    <p class="font-italic mb-4">Shipping and additional costs are
+                        calculated based on values you have entered.</p>
+                    <ul class="list-unstyled mb-4">
+                        <li class="d-flex justify-content-between py-3 border-bottom">
+                            <strong class="text-muted">Order Subtotal </strong><strong>
+                                <%=subTotal%> EGP
+                            </strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-3 border-bottom">
+                            <strong class="text-muted">Shipping and
+                                handling</strong><strong>50 EGP</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-3 border-bottom">
+                            <strong class="text-muted">Tax</strong><strong>0
+                                EGP</strong>
+                        </li>
+                        <li class="d-flex justify-content-between py-3 border-bottom">
+                            <strong class="text-muted">Total</strong>
+                            <h5 class="font-weight-bold">
+                                <%=subTotal+50%> EGP
+                            </h5>
+                        </li>
+
+                    </ul><button type="submit" class="btn btn-dark rounded py-2 btn-block">Place
+                        Your
+                        Order</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <% } %>
+
+        <%- include('parts/footer') %>

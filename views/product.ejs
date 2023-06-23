@@ -1,0 +1,52 @@
+<%- include('parts/head') ,{variant: 'compact' }%>
+</head>
+<body>
+<%- include('parts/nav') %>
+
+<div class="container">
+    <% if(!product){ %>
+        <div class="vertical-center">
+            <div class="alert alert-danger w-50 my-5 text-center">
+                Error 404<br><br>
+                No Product Found!
+            </div>
+        </div>
+    <% } else { %>
+        <div class="row">
+            <div class="col-12 col-md-6 vertical-center">
+                <img class="img-fluid rounded mt-2" src="<%=product.image%>" alt="Card image cap">
+                
+            </div>
+            <div class="col-12 col-md-6">
+                <div class="my-5">
+                    <h3><%=product.name%></h3>
+                    <div class="divider py-1 bg-dark"></div>
+                    <p><%-product.description.replaceAll('\n', '<br>')%></p>
+                    <h5><%=product.price%> EGP</h5>
+                    <form method="POST">
+                        <input type="hidden" name="name" value="<%=product.name%>">
+                        <input type="hidden" name="image" value="<%=product.image%>">
+                        <input type="hidden" name="price" value="<%=product.price%>">
+                        <input type="hidden" name="id" value="<%=product._id%>">
+                        <input type="hidden" name="redirectTo" value="/products/<%=product._id%>">
+                        <input type="number" id="amount" name="amount" class="my-3 p-2 form-control" min=0 value=0 placeholder="Quantity"><br>
+                        <button type="submit" class="btn btn-primary" formaction="/cart">Add to cart</button>
+                        <%if (isAdmin){%>
+                            <button type="submit" class="btn btn-danger " formaction="/admin/delete">Delete Item</button>
+                        <%}%>
+                    </form>
+                    <% for(let error of validationErrors){%>
+                        <div class="container vertical-center my-3">
+                            <p class="alert alert-danger text-center d-inline-block">
+                                <%=error.msg%>
+                            </p>
+                        </div>
+                      <%}%>
+            
+                </div>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<%- include('parts/footer') %>

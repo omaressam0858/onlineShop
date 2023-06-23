@@ -1,0 +1,72 @@
+<%- include('parts/head') ,{variant: 'compact' }%>        
+
+</head>
+<body>
+  <%- include('parts/nav') %>
+
+    <form class="container text-center mt-4 form-inline vertical-center" onsubmit="return validateForm()" action="/" method="GET">
+      <div class="dropdown show d-inline mx-4">
+        <a class="btn btn-secondary dropdown-toggle " href="#" role="button" id="dropdownMenuLink"
+          data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          All</a>
+
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink" name="category">
+          <%for(let Category of categories){%>
+            <a class="dropdown-item" onclick="updateDropdownText('<%=Category%>')"><%=Category%></a>
+          <%}%>
+        </div>
+
+      </div>
+      <input name="category" type="hidden" id="categoryInput" value>
+      <button type="submit" class="btn btn-primary d-inline mx-4" aria-haspopup="true" aria-expanded="false">
+        Search
+      </button>
+    </form>
+    <% for(let error of validationErrors){%>
+              
+      <p class="alert alert-danger">
+        <%=error.msg%>
+      </p>
+      
+    <%}%>
+
+    <% if(products.length == 0) {%>
+      <div class = 'vertical-center'>
+        <div class="alert alert-danger text-center w-50 my-5">No products found</div>
+      </div>
+    <%} else { %>
+    <div class="container-fluid my-5">
+      <div class="row">
+        <% for (let product of products) { %>
+          <div class="col col-12 col-md-6 col-lg-4 col-xl-3 p-2 vertical-center">
+            <div class="card custom-card" style="width: 18rem;">
+              <a class='custom-link' href="/products/<%=product._id%>">
+                <img class="card-img-top img-fluid" src="<%=product.image%>" alt="Card image cap">
+              </a>
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a class='custom-link' href="/products/<%=product._id%>">
+                    <%=product.name%>
+                  </a>
+                </h5>
+                <p class="text-secondary">
+                  <%=product.price%> EGP
+                </p>
+                <form action="/cart" method="POST">
+                  <input type="hidden" name="amount" value="1">
+                  <input type="hidden" name="image" value="<%=product.image%>">
+                  <input type="hidden" name="name" value="<%=product.name%>">
+                  <input type="hidden" name="price" value="<%=product.price%>">
+                  <input type="hidden" name="id" value="<%=product._id%>">
+                  <input type="hidden" name="redirectTo" value="/">
+                  <button type="submit" class="btn btn-primary">Add to cart</button>
+                </form>
+              </div>
+            </div>
+          </div>
+          <% } %>
+      </div>
+    </div>
+    <% } %>
+
+<%- include('parts/footer') %>
