@@ -21,7 +21,7 @@
                 <div class="my-5">
                     <h3><%=product.name%></h3>
                     <div class="divider py-1 bg-dark"></div>
-                    <p><%-product.description .replaceAll('\n', '<br>')%></p>
+                    <p><%-product.description%></p>
                     <h5><%=product.price%> EGP</h5>
                     <form method="POST">
                         <input type="hidden" name="name" value="<%=product.name%>">
